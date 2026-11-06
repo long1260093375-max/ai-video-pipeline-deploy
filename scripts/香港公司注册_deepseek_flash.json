@@ -1,0 +1,240 @@
+{
+  "topic": "香港公司注册",
+  "title": "香港公司注册一分钟",
+  "beats": [
+    {
+      "text": "你想在香港开一家收美元的小公司吗？",
+      "key": "开公司",
+      "char": "开",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "注册香港公司像给生意办一张身份证。",
+      "key": "身份证",
+      "char": "身",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "这张身份证让公司能签合同和开银行账户。",
+      "key": "合同账户",
+      "char": "合",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "你先给公司取一个容易被记住的名字。",
+      "key": "取名字",
+      "char": "取",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "这个名字不能和香港已有公司名称太像。",
+      "key": "查重名",
+      "char": "查",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "然后你准备一名出钱的股东和一名签字的董事。",
+      "key": "股东董事",
+      "char": "股",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "香港允许股东和董事由同一个人担任。",
+      "key": "同一人",
+      "char": "同",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "你还要一个能收政府信件的香港地址。",
+      "key": "注册地址",
+      "char": "注",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "这个地址常由专业秘书公司帮你提供。",
+      "key": "秘书公司",
+      "char": "秘",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "最常见的坑是只比较第一次注册价格。",
+      "key": "比价格",
+      "char": "比",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "便宜服务常漏掉年审提醒最后罚款更高。",
+      "key": "漏年审",
+      "char": "漏",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "年审和报税都要按时做否则会有罚款。",
+      "key": "年审报税",
+      "char": "年",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "第一步先上香港公司注册处网站查名字是否可用。",
+      "key": "查名字",
+      "char": "查",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "香港公司注册就是先查名再问地址和年审费。",
+      "key": "先查名",
+      "char": "先",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    }
+  ],
+  "groups": [
+    [
+      0,
+      1,
+      2
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      9,
+      10,
+      11
+    ],
+    [
+      12
+    ],
+    [
+      13
+    ]
+  ],
+  "end_cards": [
+    "先查名，再问地址和年审费",
+    "注册香港公司像办身份证"
+  ],
+  "sticker_prompts": [
+    {
+      "key": "开公司",
+      "prompt": "A large cartoon shopfront with a coin-shaped awning, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "身份证",
+      "prompt": "A large cartoon business ID card with a tiny company building portrait, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "合同账户",
+      "prompt": "A large cartoon contract sheet with a bank card peeking from behind, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "取名字",
+      "prompt": "A large cartoon blank name tag with a pencil hovering above it, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "查重名",
+      "prompt": "A large cartoon magnifying glass over two blank name plates, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "股东董事",
+      "prompt": "A large cartoon handshake between a coin character and a pen character, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "同一人",
+      "prompt": "A large cartoon single person wearing two simple badges, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "注册地址",
+      "prompt": "A large cartoon mail envelope with a tiny Hong Kong skyline, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "秘书公司",
+      "prompt": "A large cartoon friendly secretary character holding a folder and a key, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "比价格",
+      "prompt": "A large cartoon price tag with a small magnifying glass, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "漏年审",
+      "prompt": "A large cartoon calendar with a missing page and a small warning bell, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "年审报税",
+      "prompt": "A large cartoon tax form with a calendar and a clock, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "查名字",
+      "prompt": "A large cartoon computer screen showing a search bar and a blank company name card, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "先查名",
+      "prompt": "A large cartoon checklist with a name plate icon, an address pin icon, and a coin icon, single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    }
+  ],
+  "total_chars": 254,
+  "estimated_seconds": 65.4
+}

@@ -1,0 +1,10 @@
+# 大文件不进仓库：字体、Piper 语音模型、模板图片、配音缓存
+fonts/
+tools/piper/
+templates/coral-bay/background.png
+templates/coral-bay/characters/*.png
+cutouts/
+output/
+__pycache__/
+*.pyc
+.venv/

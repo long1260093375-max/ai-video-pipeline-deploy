@@ -1,0 +1,57 @@
+# Style template: Coral Bay （珊瑚湾）
+# The first template of the cutout science video series (user approved 2026-11-05).
+# Everything that defines the look of an episode lives in this folder, so a new
+# episode picks a template by name instead of re-deciding the style each time.
+# Layout rules (one-row / pin rows, subtitle position, motion, the airplane
+# orbit) are series-wide and deliberately NOT in here: changing the look must
+# not change the layout.
+name: coral-bay
+display_name: 珊瑚湾
+version: 1
+
+# Image generation (Seedream via Ark; one key, each model activated separately)
+image_model: doubao-seedream-5-0-pro-260628
+# Main sticker style: one large subject, white background, no text. Copied
+# verbatim into the image prompt for every main sticker.
+image_style: "mature flat illustration, Coral Bay sea world style, single large subject filling most of the frame, pure white background, no text, no words, no border"
+# Detail sticker style: same world, one small subject (250px tall after cut).
+detail_style: "mature flat illustration, Coral Bay sea world style, single small subject, pure white background, no text, no words, no border"
+
+# Background: 1344x768 working size. The renderer crops it to y=690 and
+# stretches it to 1920x1080, which puts the sand line at y=700. Do NOT store
+# the 1920x1080 source here, or the sand line drops to y~1000 and stickers float.
+background: background.png
+sand_line_y: 700
+
+# Fixed cast and locations live in world_bible.md + characters/. The
+# understanding step maps each sentence to this world, never to another one.
+world_bible: world_bible.md
+characters: characters/
+
+# Subtitles: Noto Sans CJK, index 2 = Simplified Chinese (index 0 is Japanese
+# glyphs: 单/贸/发/账 render as 単/貿/発/帳. Fixed 2026-11-05.)
+subtitle:
+  font: Noto Sans CJK SC Bold
+  font_index: 2
+  size: 64
+  stroke: 3
+  position_y: 775
+
+# Voice: Doubao TTS 2.0, cartoon male Xiong Er at 1.1x (user chose 2026-11-05).
+# Piper (offline, voice 花燕) is the fallback when the Doubao key is unavailable.
+voice:
+  engine: doubao
+  speaker: zh_male_xionger_uranus_bigtts
+  speech_rate: 10
+
+# Palette (reference only; the renderer takes beat colours from the script JSON)
+palette:
+  sea: "#2AA5B8"
+  sand: "#F2E3C6"
+  coral: "#FF7F6B"
+  deep: "#0F3A4A"
+
+notes:
+  - "Characters must be sea creatures, never humans, in this style (user correction 2026-11-05)."
+  - "dengdeng.png (single) is flawed: it shows a human courier boy instead of the lanternfish. Use family.png or harbor.png instead until it is redrawn."
+  - "Background and stickers are regenerated per episode only when confidence < 80% vs existing material; otherwise reuse."

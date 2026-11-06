@@ -1,0 +1,240 @@
+{
+  "topic": "香港公司注册",
+  "title": "香港公司注册：先选类型再备地址",
+  "beats": [
+    {
+      "text": "你想在香港注册一家属于自己的公司吗。",
+      "key": "想注册",
+      "char": "想",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "很多人第一步先忙着到处去找办公室。",
+      "key": "找办公室",
+      "char": "找",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "其实注册公司要先选好合适的公司类型。",
+      "key": "选类型",
+      "char": "选",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "有限公司是香港最常见也最常用的一种类型。",
+      "key": "有限公司",
+      "char": "有",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "它像给生意套上一层独立的保护外壳。",
+      "key": "保护壳",
+      "char": "保",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "公司欠债时一般只会追到公司本身的资产。",
+      "key": "追公司",
+      "char": "追",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "股东的个人财产通常不会因此受到牵连。",
+      "key": "护财产",
+      "char": "护",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "但注册前必须准备一个香港本地的注册地址。",
+      "key": "备地址",
+      "char": "备",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "没有这个地址会直接卡住你的注册申请。",
+      "key": "卡申请",
+      "char": "卡",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "注册后每年还要按时提交年报和报税表。",
+      "key": "交年报",
+      "char": "交",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "漏交年报会有罚款还会影响公司的信用记录。",
+      "key": "漏交罚",
+      "char": "漏",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "所以先查公司名称到底能不能成功注册。",
+      "key": "查名称",
+      "char": "查",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "然后再准备香港地址和股东的身份资料。",
+      "key": "备资料",
+      "char": "备",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "香港注册公司就是先选类型再备地址资料。",
+      "key": "记顺序",
+      "char": "记",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    }
+  ],
+  "groups": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3,
+      4
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      9,
+      10
+    ],
+    [
+      11,
+      12
+    ],
+    [
+      13
+    ]
+  ],
+  "end_cards": [
+    "先查名称再备地址",
+    "年报报税别漏交"
+  ],
+  "sticker_prompts": [
+    {
+      "key": "想注册",
+      "prompt": "A curious young entrepreneur with a tiny Hong Kong skyline behind them, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "找办公室",
+      "prompt": "A large cardboard moving box beside a tiny office door, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "选类型",
+      "prompt": "A large blank clipboard with two simple company-shape icons, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "有限公司",
+      "prompt": "A large rounded company building shaped like a friendly shield, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "保护壳",
+      "prompt": "A large transparent protective shell around a small business sprout, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "追公司",
+      "prompt": "A large company building with a small debt ball chained to its base, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "护财产",
+      "prompt": "A large sturdy safe protecting a tiny house and wallet, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "备地址",
+      "prompt": "A large red address pin marking a tiny Hong Kong building, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "卡申请",
+      "prompt": "A large application folder blocked by a locked gate, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "交年报",
+      "prompt": "A large blank calendar page with a small report folder and tax envelope, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "漏交罚",
+      "prompt": "A large warning triangle over a tiny company credit card, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "查名称",
+      "prompt": "A large magnifying glass over a blank company nameplate, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "备资料",
+      "prompt": "A large address pin as the main subject beside a blank ID card and a shareholder folder, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "记顺序",
+      "prompt": "A large two-step staircase with a company type icon on the lower step and an address folder on the upper step, cute flat cartoon, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    }
+  ],
+  "total_chars": 258,
+  "estimated_seconds": 66.3
+}

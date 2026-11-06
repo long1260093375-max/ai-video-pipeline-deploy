@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>科普视频工作台</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>科普视频工作台 <span class="sub">v11 版式 · 背景 + 抠图贴纸</span></h1>
+  <div class="keys">
+    {% for k, ok in keys.items() %}
+    <span class="key {{ 'ok' if ok else 'missing' }}">{{ k }}：{{ '已设置' if ok else '未设置' }}</span>
+    {% endfor %}
+    <span class="hint">Key 只从环境变量读，这里不显示任何 Key 的值</span>
+  </div>
+</header>
+
+<main>
+<section class="card" id="new-episode">
+  <h2>新建一集</h2>
+  <div class="modes">
+    <button class="mode-btn active" data-mode="topic">单个选题</button>
+    <button class="mode-btn" data-mode="batch">批量选题</button>
+    <button class="mode-btn" data-mode="copy">我自己的文案</button>
+    <button class="mode-btn" data-mode="existing">已有脚本（重渲）</button>
+  </div>
+
+  <div class="grid">
+    <label>风格模板
+      <select id="template">
+        {% for t in templates %}
+        <option value="{{ t }}" {{ 'selected' if t == 'coral-bay' else '' }}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>配音
+      <select id="voice">
+        {% for v in voices %}
+        <option value="{{ v.id }}" {{ 'selected' if v.id == 'doubao_xionger' else '' }}>{{ v.label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>字幕字体
+      <select id="font">
+        {% for f in fonts %}
+        <option value="{{ f.id }}" {{ 'disabled' if not f.available else '' }}>{{ f.label }}{{ '' if f.available else '（不可用）' }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </div>
+
+  <div id="characters-box">
+    <div class="label">人物形象 <span class="hint">默认全选；理解表只会用选中的角色</span></div>
+    <div id="characters" class="chars"></div>
+  </div>
+
+  <div class="mode-panel" id="panel-topic">
+    <label>选题
+      <input id="topic" type="text" placeholder="例如：什么是复利">
+    </label>
+    <p class="hint">自动写稿（glm-4.6），再出理解表给你审。</p>
+  </div>
+
+  <div class="mode-panel hidden" id="panel-batch">
+    <label>批量选题（一行一个，最多 20 个）
+      <textarea id="topics" rows="5" placeholder="什么是复利&#10;什么是锚定效应&#10;什么是粉红税"></textarea>
+    </label>
+    <p class="hint">每个选题单独成一集，分别走写稿、审表、生图、渲染。</p>
+  </div>
+
+  <div class="mode-panel hidden" id="panel-copy">
+    <label>标题
+      <input id="copy-title" type="text" placeholder="不填就用第一句的前 12 个字">
+    </label>
+    <label>文案（粘贴全文，会按句号拆成短句，你可以再改）
+      <textarea id="copy" rows="6" placeholder="把你的文案粘贴到这里……"></textarea>
+    </label>
+    <label>片尾卡 1 <input id="end1" type="text" value="谢谢观看"></label>
+    <label>片尾卡 2 <input id="end2" type="text" value="下期再见"></label>
+  </div>
+
+  <div class="mode-panel hidden" id="panel-existing">
+    <label>脚本（scripts/ 下的 JSON）
+      <select id="script-source">
+        {% for s in scripts %}
+        <option value="{{ s.path }}">{{ s.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>贴纸目录（相对 pipeline 根目录）
+      <input id="stickers-dir" type="text" value="cutouts/stickers_kuajing_seedream_rembg">
+    </label>
+    <label>细节贴纸目录（可选）
+      <input id="details-dir" type="text" placeholder="例如 cutouts/stickers_kuajing_seedream_detail">
+    </label>
+    <label>跳过细节的句号（可选，逗号分隔）
+      <input id="skip-details" type="text" placeholder="例如 1,3">
+    </label>
+    <p class="hint">直接渲染，不走写稿、理解表、生图。适合给旧集换模板、换配音、换字体。</p>
+  </div>
+
+  <button id="create-btn" class="primary">开始生成</button>
+  <div id="create-msg" class="msg"></div>
+</section>
+
+<section class="card" id="jobs">
+  <h2>任务 <button id="export-all" class="small">批量导出已通过的</button></h2>
+  <div id="job-list" class="job-list"><p class="hint">暂无任务。</p></div>
+</section>
+
+<section class="card hidden" id="review">
+  <h2>审片 <span id="review-title"></span></h2>
+  <div id="review-body"></div>
+</section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

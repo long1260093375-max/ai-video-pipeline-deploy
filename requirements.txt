@@ -1,0 +1,12 @@
+# 拍剪科普视频流水线（本地部署）依赖
+# 安装：python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+# 说明：rembg 会自动带上 onnxruntime、numpy、pooch、PyMatting；faster-whisper
+# 不在里面（只在“按录音逐词对位”那类手工对齐时才用，平时不需要）。
+Pillow>=10.0
+PyYAML>=6.0
+requests>=2.31
+rembg>=2.0
+onnxruntime>=1.17
+scipy>=1.11
+numpy>=1.26
+Flask>=3.0

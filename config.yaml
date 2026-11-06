@@ -1,0 +1,28 @@
+# 不依赖 Muse 的科普短视频流水线配置
+# 改这里，就改了所有成片的统一风格。改完直接运行 pipeline.py，不用找 Muse。
+series_name: "3分钟讲清一个概念"
+resolution: [1080, 1920]   # 抖音竖屏 9:16
+fps: 30
+voice: "zh-CN-XiaoxiaoNeural"   # edge-tts 音色，换音色改这里
+voice_rate: "+0%"
+# 画面配色（原创模板，不用任何现成 IP 角色）
+background: "#0F172A"
+accent: "#F59E0B"
+text_color: "#FFFFFF"
+muted_color: "#CBD5E1"
+# 字幕/卡片字体：程序会自动在下面这些路径里找第一个存在的中文字体
+font_candidates:
+  # Bundled with this package (fonts/): Noto Sans CJK, index 2 = Simplified
+  # Chinese. These are tried first so subtitles are SC on any machine.
+  - "fonts/NotoSansCJK-Bold.ttc"
+  - "fonts/NotoSansCJK-Regular.ttc"
+  - "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
+  - "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc"
+  - "C:/Windows/Fonts/msyh.ttc"
+  - "C:/Windows/Fonts/simhei.ttf"
+  - "/System/Library/Fonts/PingFang.ttc"
+# 可选的大模型模式：不填就是纯模板模式，完全离线写稿，不调用任何大模型。
+# 如果想让机器给 topics.yaml 里没有的新选题自动写稿，再填下面两项（OpenAI 兼容接口）：
+# llm_api_base: "https://api.openai.com/v1"
+# llm_model: "gpt-4o-mini"
+disclaimer: "个人观点，仅供参考，不构成投资建议"

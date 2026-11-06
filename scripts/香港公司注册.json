@@ -1,0 +1,236 @@
+{
+  "topic": "香港公司注册",
+  "title": "香港公司注册",
+  "beats": [
+    {
+      "text": "你想开一家香港公司来做外贸生意吗？",
+      "key": "香港外贸",
+      "char": "香",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "很多人觉得跨国注册肯定非常麻烦。",
+      "key": "觉得麻烦",
+      "char": "觉",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "其实香港公司注册比想象的简单得多。",
+      "key": "注册简单",
+      "char": "注",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "整个过程就像在网上注册一个新账号。",
+      "key": "网上开户",
+      "char": "网",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "你只需要准备几份最基本的公司文件。",
+      "key": "基本文件",
+      "char": "基",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "提供股东身份证和公司英文名字就行。",
+      "key": "身份名字",
+      "char": "身",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "香港根本不要求你有当地的实体办公室。",
+      "key": "无需办公",
+      "char": "无",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "你可以直接借用秘书公司的注册地址。",
+      "key": "秘书地址",
+      "char": "秘",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "但千万别忘了公司每年都有维护成本。",
+      "key": "维护成本",
+      "char": "维",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "商业登记费和周年申报表费用必须按时交。",
+      "key": "登记申报",
+      "char": "登",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "找专业代理做账审计每年也要花一笔钱。",
+      "key": "代理做账",
+      "char": "代",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "你的第一步是先想好一个独特的公司名字。",
+      "key": "想好名字",
+      "char": "想",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "去香港注册处网上查重确保没被别人占用。",
+      "key": "网上查重",
+      "char": "网",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "香港注册快但后续的维护绝对不能少。",
+      "key": "维护不能少",
+      "char": "维",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    }
+  ],
+  "groups": [
+    [
+      0,
+      1,
+      2
+    ],
+    [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    [
+      8,
+      9,
+      10
+    ],
+    [
+      11,
+      12
+    ],
+    [
+      13
+    ]
+  ],
+  "end_cards": [
+    "点击收藏备用",
+    "关注了解更多"
+  ],
+  "sticker_prompts": [
+    {
+      "key": "香港外贸",
+      "prompt": "Cargo ship with shipping containers, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "觉得麻烦",
+      "prompt": "Person holding head looking confused, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "注册简单",
+      "prompt": "Unlocked padlock, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "网上开户",
+      "prompt": "Computer mouse clicking a button, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "基本文件",
+      "prompt": "Document with a checkmark, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "身份名字",
+      "prompt": "ID card next to a name tag, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "无需办公",
+      "prompt": "Building with a red cross over it, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "秘书地址",
+      "prompt": "Mailbox with a location pin, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "维护成本",
+      "prompt": "Wrench with a coin, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "登记申报",
+      "prompt": "Calendar with a stamp, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "代理做账",
+      "prompt": "Abacus with a calculator, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "想好名字",
+      "prompt": "Lightbulb with a label, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "网上查重",
+      "prompt": "Magnifying glass over a computer screen, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    },
+    {
+      "key": "维护不能少",
+      "prompt": "Shield with a checkmark, a single large subject filling most of the frame, cute flat cartoon, no text, no words, transparent background, no white border."
+    }
+  ],
+  "total_chars": 245,
+  "estimated_seconds": 63.4
+}

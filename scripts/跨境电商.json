@@ -1,0 +1,240 @@
+{
+  "topic": "跨境电商",
+  "title": "跨境电商一分钟入门",
+  "beats": [
+    {
+      "text": "你有没有在手机上买过一瓶日本来的眼药水",
+      "key": "手机购物",
+      "char": "手",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "这件小事其实就是跨境电商最普通的日常",
+      "key": "跨境日常",
+      "char": "跨",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "它说白就是把一个国家的货卖到另一个国家",
+      "key": "跨国卖货",
+      "char": "跨",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "你在家点一下手机货就会从海外仓库发出",
+      "key": "海外仓库",
+      "char": "海",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "这就像寄普通快递只是它跨过了国境",
+      "key": "跨国快递",
+      "char": "跨",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "海关要开箱查验所以物流会比国内慢一些",
+      "key": "海关查验",
+      "char": "海",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "万一尺码不合适退换货也会更麻烦",
+      "key": "退换货",
+      "char": "退",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "很多人第一次做会忽略运费和进口关税",
+      "key": "运费关税",
+      "char": "运",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "一件不起眼的小商品可能多出十几块钱成本",
+      "key": "隐藏成本",
+      "char": "隐",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "想试水就先挑一个又轻又小又便宜的品类",
+      "key": "选轻小件",
+      "char": "选",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "然后再找一家愿意支持一件代发的供应商",
+      "key": "找供应商",
+      "char": "找",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "商品上架前先把运费和退货规则算清楚",
+      "key": "算清规则",
+      "char": "算",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "小步试错比一次性囤满一大仓库货更稳",
+      "key": "小步试错",
+      "char": "小",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "跨境电商就是跨国零售先把每一笔账都算清",
+      "key": "算清账本",
+      "char": "算",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    }
+  ],
+  "groups": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      10,
+      11
+    ],
+    [
+      12,
+      13
+    ]
+  ],
+  "end_cards": [
+    "先算清账再上架",
+    "小步试错慢慢放大"
+  ],
+  "sticker_prompts": [
+    {
+      "key": "手机购物",
+      "prompt": "A cute flat cartoon smartphone with a tiny shopping bag floating above it, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "跨境日常",
+      "prompt": "A cute flat cartoon parcel box on a kitchen table beside a small medicine bottle, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "跨国卖货",
+      "prompt": "A cute flat cartoon globe with a small parcel sliding across it, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "海外仓库",
+      "prompt": "A cute flat cartoon warehouse shelf stacked with parcel boxes, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "跨国快递",
+      "prompt": "A cute flat cartoon delivery truck crossing a dotted border line, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "海关查验",
+      "prompt": "A cute flat cartoon customs officer holding a magnifying glass over a parcel box, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "退换货",
+      "prompt": "A cute flat cartoon open parcel box with a looping return arrow, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "运费关税",
+      "prompt": "A cute flat cartoon stack of coins beside a parcel box and a tiny blank receipt, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "隐藏成本",
+      "prompt": "A cute flat cartoon price tag hanging on a small parcel, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "选轻小件",
+      "prompt": "A cute flat cartoon phone case sitting on a small scale, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "找供应商",
+      "prompt": "A cute flat cartoon handshake above a parcel box, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "算清规则",
+      "prompt": "A cute flat cartoon calculator beside a parcel box and a return arrow, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "小步试错",
+      "prompt": "A cute flat cartoon person taking a small step onto stacked parcel boxes, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    },
+    {
+      "key": "算清账本",
+      "prompt": "A cute flat cartoon open ledger book with coins and a small parcel, single large subject filling most of the frame, transparent background, no text, no words, no white border."
+    }
+  ],
+  "total_chars": 248,
+  "estimated_seconds": 64.1
+}

@@ -1,0 +1,236 @@
+{
+  "topic": "香港公司注册",
+  "title": "注册香港公司的避坑指南",
+  "beats": [
+    {
+      "text": "你知道注册一家香港公司到底要花多少时间吗？",
+      "key": "开场提问",
+      "char": "开",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "整个注册流程最快三个工作日就能走完。",
+      "key": "流程时长",
+      "char": "流",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "第一步要先准备好公司的中英文备选名称。",
+      "key": "核名准备",
+      "char": "核",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "名称不能包含政府禁用的敏感字样。",
+      "key": "禁字要求",
+      "char": "禁",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "也不能和已注册的存量公司名称完全重名。",
+      "key": "重名核查",
+      "char": "重",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "第二步要准备好所有董事股东的身份证明文件。",
+      "key": "材料准备",
+      "char": "材",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "哪怕你长期在内地居住也可以远程完成全部提交。",
+      "key": "远程办理",
+      "char": "远",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "所有材料线上提交后就等注册处的审批结果。",
+      "key": "提交等待",
+      "char": "提",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "很多人以为拿到营业执照就可以正常营业。",
+      "key": "常见误区",
+      "char": "常",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    },
+    {
+      "text": "其实注册完成后还要按年完成年审和报税义务。",
+      "key": "后续义务",
+      "char": "后",
+      "color": [
+        239,
+        68,
+        68
+      ]
+    },
+    {
+      "text": "逾期不报税会被政府处以高额罚款甚至影响征信。",
+      "key": "违规代价",
+      "char": "违",
+      "color": [
+        59,
+        130,
+        246
+      ]
+    },
+    {
+      "text": "你现在就可以先上香港注册处的官网免费查名。",
+      "key": "实操第一步",
+      "char": "实",
+      "color": [
+        245,
+        158,
+        11
+      ]
+    },
+    {
+      "text": "不用一开始就花大价钱找中介代办全流程。",
+      "key": "省钱提示",
+      "char": "省",
+      "color": [
+        168,
+        85,
+        247
+      ]
+    },
+    {
+      "text": "注册本身不难长期合规维护才是核心要点。",
+      "key": "核心总结",
+      "char": "核",
+      "color": [
+        34,
+        197,
+        94
+      ]
+    }
+  ],
+  "groups": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    [
+      8,
+      9,
+      10
+    ],
+    [
+      11,
+      12
+    ],
+    [
+      13
+    ]
+  ],
+  "end_cards": [
+    "香港公司注册处官网入口已整理在评论区",
+    "合规经营才能长久发展"
+  ],
+  "sticker_prompts": [
+    {
+      "key": "开场提问",
+      "prompt": "Cute flat cartoon of a rounded yellow question mark, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "流程时长",
+      "prompt": "Cute flat cartoon of a round wall clock with a fast-spinning hand, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "核名准备",
+      "prompt": "Cute flat cartoon of a blank printed name slip, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "禁字要求",
+      "prompt": "Cute flat cartoon of a red circular prohibition sign, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "重名核查",
+      "prompt": "Cute flat cartoon of a magnifying glass placed over two identical manila folders, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "材料准备",
+      "prompt": "Cute flat cartoon of a plastic ID card on a wooden desk, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "远程办理",
+      "prompt": "Cute flat cartoon of an open slim laptop, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "提交等待",
+      "prompt": "Cute flat cartoon of a glass hourglass with flowing sand, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "常见误区",
+      "prompt": "Cute flat cartoon of a glowing lightbulb with a small cross mark, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "后续义务",
+      "prompt": "Cute flat cartoon of a paper desk calendar with marked reminder dots, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "违规代价",
+      "prompt": "Cute flat cartoon of a yellow triangular warning sign, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "实操第一步",
+      "prompt": "Cute flat cartoon of a white computer mouse clicking, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "省钱提示",
+      "prompt": "Cute flat cartoon of a stacked pile of gold coins, large subject filling most of the frame, no text, transparent background, no white border"
+    },
+    {
+      "key": "核心总结",
+      "prompt": "Cute flat cartoon of a small green sapling growing in soil, large subject filling most of the frame, no text, transparent background, no white border"
+    }
+  ],
+  "total_chars": 277,
+  "estimated_seconds": 70.6
+}

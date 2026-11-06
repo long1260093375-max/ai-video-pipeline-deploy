@@ -1,0 +1,16 @@
+{
+  "title": "香港公司注册",
+  "beats": [
+    {"text": "在香港开设公司，第一步是什么？", "key": "step"},
+    {"text": "第一步是选择公司名称。", "key": "name"},
+    {"text": "名称需独特，避免与他人重复。", "key": "unique"},
+    {"text": "注册费用不低，需谨慎考虑。", "key": "cost"},
+    {"text": "注册后，需定期更新公司资料。", "key": "update"},
+    {"text": "确保所有信息准确无误。", "key": "accuracy"},
+    {"text": "香港公司注册，关键在于选择合适的名称。", "key": "name_key"}
+  ],
+  "groups": [[0], [1, 2], [3], [4, 5], [6]],
+  "end_cards": ["选择合适的公司名称至关重要。", "了解香港公司注册的每一步。"],
+  "total_chars": 97,
+  "note": "glm-4-flash raw draft, did NOT pass pipeline validation (needs 12-14 beats, 200-320 chars)"
+}
