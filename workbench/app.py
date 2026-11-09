@@ -194,15 +194,22 @@ def split_copy(text):
 
 
 def build_script_json(title, beats, end_cards, topic=""):
-    """beats: [{text, key}]. Fills char/color the way the script generator does."""
+    """beats: [{text, key}]. Fills char/color the way the script generator does.
+    A beat's optional `motion` dict (enter / trigger_word / trigger_time)
+    is carried through unchanged so the renderer can use it; the same
+    goes for top-level `beat_durs` / `word_times` when the caller passes
+    them via a `meta` beat (not used by the UI yet)."""
     out_beats = []
     for i, b in enumerate(beats):
-        out_beats.append({
+        beat = {
             "text": b["text"],
             "key": b.get("key") or b["text"][:4],
             "char": b["text"][:1],
             "color": list(FONT_PALETTE[i % len(FONT_PALETTE)]),
-        })
+        }
+        if isinstance(b.get("motion"), dict):
+            beat["motion"] = b["motion"]
+        out_beats.append(beat)
     total = sum(len(b["text"]) for b in out_beats)
     groups = [[i, i + 1] for i in range(0, len(out_beats) - 1, 2)]
     if len(out_beats) % 2 == 1:

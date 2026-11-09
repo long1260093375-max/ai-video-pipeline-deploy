@@ -13,6 +13,7 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE))
 import pipeline
+import sticker_motion
 from template import load_template
 from PIL import Image, ImageDraw, ImageFilter
 
@@ -29,6 +30,8 @@ _ap_p.add_argument("--details", default="", help="dir of detail_XX.png stickers 
 _ap_p.add_argument("--skip-details", default="", help="comma-separated beat indices whose detail sticker is skipped (not every sentence needs one; decide by sentence meaning)")
 _ap_p.add_argument("--background", default="dusk", choices=["dusk", "ai"], help="background: dusk = code-drawn gradient (default), ai = the template's town image, unblurred, with bottom fade and watermark cropped out")
 _ap_p.add_argument("--template", default="coral-bay", help="style template under templates/ (default coral-bay); the background, world and style words come from it")
+_ap_p.add_argument("--beat-durs", default="", help="per-beat durations (seconds): a JSON file (list or {\"beat_durs\": [...]}) or a comma-separated list. Overrides the script's beat_durs and the theoretical estimate. A '<script stem>_beat_durs.json' sidecar next to the script is used when this is empty.")
+_ap_p.add_argument("--word-times", default="", help="word timestamps JSON: {beat_index: [{word, start, end}]} with times in seconds relative to the beat start. Used to resolve motion.trigger_word to a real voice time.")
 _ap_a = _ap_p.parse_args()
 DETAILS = (Path(_ap_a.details) if Path(_ap_a.details).is_absolute() else BASE / _ap_a.details) if _ap_a.details else None
 SKIP_DETAILS = {int(x) for x in _ap_a.skip_details.split(",") if x.strip()} if _ap_a.skip_details else set()
@@ -179,18 +182,20 @@ def dur_of(sent):
     rate = 1.0 + (_ap_a.speech_rate / 100.0 if _ap_a.tts == "doubao" else 0.0)
     return max(2.0, len(sent) / 4.5 / rate)
 
-# v13: actual voice boundaries, one entry per beat (sentence start -> next
-# sentence start; last beat -> voice end). Source: faster-whisper on the
-# v10 Bear track (output/kuajing-seedream-v10/audio.mp3), 2026-11-06.
-BEAT_DURS = [3.76, 3.40, 4.22, 3.42, 3.16, 3.86, 3.06, 3.48, 3.80, 3.82, 3.58, 3.52, 3.62, 3.78]
-# Frame-exact lengths: "-t dur" rounds each segment UP to a frame boundary
-# and the error accumulates (+0.32s by beat 13), so the subtitles lag the
-# voice at the end. Instead, quantise the CUMULATIVE voice boundaries to
-# whole frames at 30fps and take per-beat frame counts from them; the
-# segment is then forced to exactly that many frames with -frames:v.
-_BEAT_BOUNDS = [0, 3.76, 7.16, 11.38, 14.80, 17.96, 21.82, 24.88, 28.36, 32.16, 35.98, 39.56, 43.08, 46.70, 50.48]
-_BEAT_BOUNDS_F = [round(b * 30) for b in _BEAT_BOUNDS]
-BEAT_FRAMES = [_BEAT_BOUNDS_F[i+1] - _BEAT_BOUNDS_F[i] for i in range(len(BEAT_DURS))]
+# Beat durations (round 1, 2026-11-07): no longer hardcoded for one film.
+# Resolved from --beat-durs, a "<script stem>_beat_durs.json" sidecar, the
+# script's own `beat_durs` field, or the theoretical estimate, in that
+# order (sticker_motion.resolve_beat_durs). The old hardcoded list was the
+# faster-whisper measurement of the kuajing v10 Bear track; it now lives
+# in scripts/跨境电商_beat_durs.json so this file stays film-agnostic.
+# Boundaries are quantised to whole frames at 30fps from the CUMULATIVE
+# durations, so the per-beat error does not accumulate.
+BEAT_DURS, _DUR_SRC = sticker_motion.resolve_beat_durs(
+    _SCRIPT, _ap_a.beat_durs or None, dur_of,
+    script_path=_ap_a.script)
+_BEAT_BOUNDS, _BEAT_BOUNDS_F, BEAT_FRAMES = sticker_motion.frame_bounds(BEAT_DURS)
+WORD_TIMES = sticker_motion.load_word_times(_ap_a.word_times or None, _SCRIPT)
+print("句长来源：%s（%d 句）" % (_DUR_SRC, len(BEAT_DURS)))
 
 seg_files, audios, total = [], [], 0.0
 seg_idx = 0
@@ -321,7 +326,13 @@ def add_segment(dur, cmd_args, filt, out_name, audio_texts=None, audio_durs=None
 for bi in range(len(BEATS)):
     sent, key, icon, accent = BEATS[bi]
     dur = BEAT_FRAMES[bi] / 30.0  # v13: frame-exact real voice timing
-    mid = dur / 2.0
+    # detail trigger (round 1): resolved from the beat's motion config
+    # (trigger_time > word timestamp > estimated by keyword position >
+    # mid-sentence default). `trig` is when the detail STARTS entering.
+    trig, trig_src = sticker_motion.resolve_trigger(
+        _SCRIPT["beats"][bi], bi, dur, WORD_TIMES)
+    if trig_src != "default":
+        print("句 %d 细节触发：%.2fs（%s）" % (bi + 1, trig, trig_src))
     # main sticker: 486px tall (45% of screen height), feet on sand line
     _sp = STICKER_DIR / ("sticker_%02d.png" % bi)
     _im = Image.open(_sp).convert("RGBA")
@@ -369,8 +380,8 @@ for bi in range(len(BEATS)):
         if bi == 2:
             # the airplane orbits the globe (user 2026-11-05): per-frame
             # rotation so its nose follows the flight path. t1 = when the
-            # orbit starts (0.5s after it appears).
-            _t1 = mid + 0.5
+            # orbit starts (0.5s after it appears, i.e. after the fall).
+            _t1 = trig + 0.5
             _ang = ("if(lt(t,%.2f),0,atan2(180*sin(1.5708*(t-%.2f)),-300*cos(1.5708*(t-%.2f)))-PI)"
                     % (_t1, _t1, _t1))
             filt_parts.append("[%d:v]format=rgba,rotate=a='%s':ow='hypot(iw,ih)':oh='hypot(iw,ih)':fillcolor=black@0[d0]" % (inp, _ang))
@@ -384,46 +395,42 @@ for bi in range(len(BEATS)):
     filt_parts.append("[%d:v]format=rgba[s0]" % inp)
     inp += 1
     tmp = 0
-    # main sticker entrance: one of four per beat, cycled by beat index
-    etype = bi % 4
-    if etype == 0:
-        ex, ey = "-(1-min(t/0.6,1))*400", "0"
-    elif etype == 1:
-        ex, ey = "+(1-min(t/0.6,1))*400", "0"
-    elif etype == 2:
-        ex, ey = "0", "-pow(1-min(t/0.6,1),2)*600"
-    else:
-        ex, ey = "0", "+pow(1-min(t/0.6,1),2)*400"
-    # idle bob: small, period and phase differ per sticker
-    bob = "4*sin(2*PI*t/%.1f+%.1f)" % (3.0 + (bi % 3) * 0.6, bi * 1.3)
-    # centre-x over time: centred until mid-beat, then slides to the left
-    # slot (ease-out squared, 0.6s) to make room for the detail
+    # main sticker entrance (round 1): horizontal slide-in only. The old
+    # bi % 4 rotation (left / right / drop from top / rise from bottom)
+    # is gone; direction comes from motion.enter (default left).
+    # Smootherstep easing over 0.6s. No idle bob and no hop any more:
+    # after entering, the sticker stays still on the sand line.
+    enter_dir = sticker_motion.resolve_enter(_SCRIPT["beats"][bi])
+    ex = sticker_motion.ff_enter_offset(enter_dir, start=0.0)
+    # centre-x over time: centred until the detail is about to enter,
+    # then slides to the left slot with smootherstep (0.6s), starting
+    # 0.1s before the detail trigger so it is already moving when the
+    # detail arrives. No hop.
     if has_det:
-        cx_expr = ("if(lt(t,%.2f),%d,%d+(%d-%d)*pow(1-min((t-%.2f)/0.6,1),2))"
-                   % (mid, W // 2, main_cx_end, W // 2, main_cx_end, mid))
-        hop = ("if(between(t,%.2f,%.2f),-10*sin(PI*(t-%.2f)/0.45),0)"
-               % (mid, mid + 0.45, mid))
+        cx_expr = sticker_motion.ff_slide(
+            str(W // 2), str(main_cx_end),
+            max(0.0, trig - sticker_motion.YIELD_LEAD),
+            sticker_motion.YIELD_DUR)
     else:
         cx_expr = "%d" % (W // 2)
-        hop = "0"
     x1 = "(%s)+(%s)-%d/2" % (cx_expr, ex, card_w)
-    y1 = "%d+(%s)+(%s)+(%s)" % (700 - _mh, ey, bob, hop)
+    y1 = "%d" % (700 - _mh)
     nxt = "tmp%d" % tmp
     filt_parts.append("[%s][c0]overlay=x='%s':y='%s':enable='between(t,0,%s)'[%s]" % (cur, x1, y1, dur, nxt))
     cur, tmp = nxt, tmp + 1
-    # detail sticker: drops in from above at mid-sentence with a small
-    # bounce on landing, feet on the sand line, stays till the beat ends.
-    # The airplane (beat 2) is special: after it appears it orbits the
-    # globe, one slow circle per 4s, nose following the path.
+    # detail sticker: drops in from above at the resolved trigger time
+    # with an accelerating fall, then ONE small upward bounce (8px,
+    # 0.35s) that never goes below the sand line and settles to still.
+    # No continuous bob afterwards. The airplane (beat 2) is special:
+    # after it appears it orbits the globe, one slow circle per 4s,
+    # nose following the path.
     if has_det:
-        _drop = "pow(1-min((t-%.2f)/0.5,1),2)*400" % mid
-        _bounce = ("if(lt(t,%.2f),0,10*sin(2*PI*(t-%.2f)*2.5)*max(0,1-(t-%.2f)/0.8))"
-                   % (mid + 0.5, mid + 0.5, mid + 0.5))
-        _dbob = "3*sin(2*PI*t/3.7+%.1f)" % (bi * 1.7)
+        _drop = sticker_motion.ff_drop(trig)
+        _bounce = sticker_motion.ff_bounce(trig + sticker_motion.DROP_DUR)
         if bi == 2:
             _ocx, _ocy = main_cx_end, int(700 - _mh / 2)
             _S = det_rot
-            _t1 = mid + 0.5
+            _t1 = trig + 0.5
             _th = "1.5708+1.5708*(t-%.2f)" % _t1
             _dx = ("if(lt(t,%.2f),%d-%d/2,%d+300*cos(%s)-%d/2)"
                    % (_t1, _ocx, _S, _ocx, _th, _S))
@@ -431,9 +438,9 @@ for bi in range(len(BEATS)):
                    % (_t1, _ocy - 180, _drop, _S, _ocy, _th, _S))
         else:
             _dx = "%d-%d/2" % (det_cx, det_w)
-            _dy = "%d-(%s)+(%s)+(%s)" % (700 - det_h, _drop, _bounce, _dbob)
+            _dy = "%d-(%s)+(%s)" % (700 - det_h, _drop, _bounce)
         nxt = "tmp%d" % tmp
-        filt_parts.append("[%s][d0]overlay=x='%s':y='%s':enable='between(t,%.2f,%s)'[%s]" % (cur, _dx, _dy, mid, dur, nxt))
+        filt_parts.append("[%s][d0]overlay=x='%s':y='%s':enable='between(t,%.2f,%s)'[%s]" % (cur, _dx, _dy, trig, dur, nxt))
         cur, tmp = nxt, tmp + 1
     nxt = "tmp%d" % tmp
     filt_parts.append("[%s][s0]overlay=x='(W-w)/2':y=775:enable='between(t,0,%s)'[%s]" % (cur, dur, nxt))

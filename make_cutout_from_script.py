@@ -9,6 +9,7 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE))
 import pipeline
+import sticker_motion
 from template import load_template
 from PIL import Image, ImageDraw, ImageFilter
 
@@ -25,6 +26,8 @@ _ap_p.add_argument("--details", default="", help="dir of detail_XX.png stickers 
 _ap_p.add_argument("--skip-details", default="", help="comma-separated beat indices whose detail sticker is skipped (not every sentence needs one; decide by sentence meaning)")
 _ap_p.add_argument("--background", default="dusk", choices=["dusk", "ai"], help="background: dusk = code-drawn gradient (default), ai = the template's town image, unblurred, with bottom fade and watermark cropped out")
 _ap_p.add_argument("--template", default="coral-bay", help="style template under templates/ (default coral-bay); the background, world and style words come from it")
+_ap_p.add_argument("--beat-durs", default="", help="per-beat durations (seconds): a JSON file (list or {\"beat_durs\": [...]}) or a comma-separated list. Overrides the script's beat_durs and the theoretical estimate.")
+_ap_p.add_argument("--word-times", default="", help="word timestamps JSON: {beat_index: [{word, start, end}]} with times in seconds relative to the beat start. Used to resolve motion.trigger_word to a real voice time.")
 _ap_a = _ap_p.parse_args()
 DETAILS = (Path(_ap_a.details) if Path(_ap_a.details).is_absolute() else BASE / _ap_a.details) if _ap_a.details else None
 SKIP_DETAILS = {int(x) for x in _ap_a.skip_details.split(",") if x.strip()} if _ap_a.skip_details else set()
@@ -175,6 +178,14 @@ def dur_of(sent):
     rate = 1.0 + (_ap_a.speech_rate / 100.0 if _ap_a.tts == "doubao" else 0.0)
     return max(2.0, len(sent) / 4.5 / rate)
 
+# Beat durations (round 1): from --beat-durs, a sidecar, the script's
+# `beat_durs` field, or the theoretical estimate, in that order.
+ALL_DURS, _DUR_SRC = sticker_motion.resolve_beat_durs(
+    _SCRIPT, _ap_a.beat_durs or None, dur_of,
+    script_path=_ap_a.script)
+WORD_TIMES = sticker_motion.load_word_times(_ap_a.word_times or None, _SCRIPT)
+print("句长来源：%s（%d 句）" % (_DUR_SRC, len(ALL_DURS)))
+
 seg_files, audios, total = [], [], 0.0
 seg_idx = 0
 TTS = _ap_a.tts
@@ -281,7 +292,7 @@ def add_segment(dur, cmd_args, filt, out_name, audio_texts=None, audio_durs=None
 # no title segment: user 2026-11-05 wants the film to start directly with
 # the first cartoon scene, no title black screen or title subtitle.
 for gi, group in enumerate(GROUPS):
-    durs = [dur_of(BEATS[i][0]) for i in group]
+    durs = [ALL_DURS[i] for i in group]
     gdur = sum(durs)
     offsets = [0.0]
     for dd in durs[:-1]:
@@ -365,8 +376,11 @@ for gi, group in enumerate(GROUPS):
             # the airplane orbits the globe (user 2026-11-05): it needs a
             # per-frame rotation so its nose follows the flight path. The
             # angle is 0 while it drops in, then follows the orbit tangent.
-            # t1 = when the orbit starts (0.5s after it appears).
-            _t1 = offsets[k] + durs[k] / 2.0 + 0.5
+            # t1 = when the orbit starts (0.5s after it appears, i.e.
+            # after the fall, at the resolved trigger time).
+            _tl, _ = sticker_motion.resolve_trigger(
+                _SCRIPT["beats"][bi], bi, durs[k], WORD_TIMES)
+            _t1 = offsets[k] + _tl + 0.5
             _ang = ("if(lt(t,%.2f),0,atan2(180*sin(1.5708*(t-%.2f)),-300*cos(1.5708*(t-%.2f)))-PI)"
                     % (_t1, _t1, _t1))
             filt_parts.append("[%d:v]format=rgba,rotate=a='%s':ow='hypot(iw,ih)':oh='hypot(iw,ih)':fillcolor=black@0[d%d]" % (inp, _ang, k))
@@ -407,45 +421,26 @@ for gi, group in enumerate(GROUPS):
         for _i, _w in enumerate(_widths):
             _row_cx[_i] = _cx + _w // 2
             _cx += _w + _gap
-    def _hop_expr(events):
-        # small reaction hop (-10px, 0.45s) when another element appears
-        _parts = []
-        for _te in events:
-            _parts.append("if(between(t,%s,%s),-10*sin(PI*(t-%s)/0.45),0)" % (_te, _te + 0.45, _te))
-        return "+".join(_parts) if _parts else "0"
     for k, bi in enumerate(group):
         off = offsets[k]
-        mid = off + durs[k] / 2.0
         end = offsets[k + 1] if k + 1 < len(group) else gdur
-        # varied entrances (user 2026-11-05): one of four per beat, cycled by
-        # beat index: slide from left, slide from right, drop from top, rise
-        # from bottom. Entrance takes 0.6s with an ease-out (squared) for
-        # the vertical ones.
-        etype = bi % 4
-        if etype == 0:
-            ex, ey = "-(1-min((t-%s)/0.6,1))*400" % off, "0"
-        elif etype == 1:
-            ex, ey = "+(1-min((t-%s)/0.6,1))*400" % off, "0"
-        elif etype == 2:
-            ex, ey = "0", "-pow(1-min((t-%s)/0.6,1),2)*600" % off
-        else:
-            ex, ey = "0", "+pow(1-min((t-%s)/0.6,1),2)*400" % off
-        # idle bob: small, period and phase differ per sticker so the pair
-        # does not sway in lockstep
-        bob = "4*sin(2*PI*t/%.1f+%.1f)" % (3.0 + (bi % 3) * 0.6, bi * 1.3)
+        # detail trigger (round 1): resolved from the beat's motion config.
+        # `trig` is the absolute time (within this group segment) when the
+        # detail STARTS entering.
+        _trig_local, _trig_src = sticker_motion.resolve_trigger(
+            _SCRIPT["beats"][bi], bi, durs[k], WORD_TIMES)
+        trig = off + _trig_local
+        if _trig_src != "default":
+            print("组 %d 句 %d 细节触发：%.2fs（%s）" % (gi + 1, bi + 1, trig, _trig_src))
+        # entrance (round 1): horizontal slide-in only. The old bi % 4
+        # rotation (left / right / drop from top / rise from bottom) is
+        # gone; direction comes from motion.enter (default left).
+        # Smootherstep easing over 0.6s from the beat start. No idle bob
+        # and no hop: the sticker stays still after entering.
+        enter_dir = sticker_motion.resolve_enter(_SCRIPT["beats"][bi])
+        ex = sticker_motion.ff_enter_offset(enter_dir, start=off)
         Wk, Hk = card_ws[k], card_hs[k]
         YB = ys[k] + Hk
-        # appearance times of the other elements in this group, for hops
-        _events = []
-        for _k2, _bi2 in enumerate(group):
-            if _k2 != k:
-                _events.append(offsets[_k2])
-            if _bi2 in det_sizes and _bi2 != bi:
-                _events.append(offsets[_k2] + durs[_k2] / 2.0)
-        if bi in det_sizes:
-            _events.append(mid)
-        _events = sorted(set(_e for _e in _events if _e > off))
-        hop = _hop_expr(_events)
         # centre-x of this sticker over time
         if _mode == "row":
             # row order is [main0, detail0, [detail1,] main1]
@@ -453,22 +448,27 @@ for gi, group in enumerate(GROUPS):
         elif len(group) == 1:
             cx_expr = "%d" % (xs[k] + Wk // 2)
         elif k == 0:
+            # first sticker slides left to its slot when the second
+            # appears, smootherstep (0.6s), starting 0.1s before that.
             _off1 = offsets[1]
-            cx_expr = ("if(lt(t,%s),%d,%d-(1-pow(1-min((t-%s)/0.6,1),2))*(%d-%d))"
-                       % (_off1, W // 2, W // 2, _off1, W // 2, xs[0] + Wk // 2))
+            cx_expr = sticker_motion.ff_slide(
+                str(W // 2), str(xs[0] + Wk // 2),
+                max(0.0, _off1 - sticker_motion.YIELD_LEAD),
+                sticker_motion.YIELD_DUR)
         else:
             cx_expr = "%d" % (xs[k] + Wk // 2)
         # main sticker: one framing for the whole group (the mid-sentence
         # push-in cut was rejected by the user 2026-11-05: cut the sentence's
         # content, not the picture). It accumulates within the group.
         x1 = "(%s)+(%s)-%d/2" % (cx_expr, ex, Wk)
-        y1 = "%d+(%s)+(%s)+(%s)" % (YB - Hk, ey, bob, hop)
+        y1 = "%d" % (YB - Hk)
         nxt = "tmp%d" % tmp
         filt_parts.append("[%s][c%d]overlay=x='%s':y='%s':enable='between(t,%s,%s)'[%s]" % (cur, k, x1, y1, off, gdur, nxt))
         cur, tmp = nxt, tmp + 1
-        # detail sticker: the sentence's second content element. It drops in
-        # from above at mid-sentence with a small bounce on landing, and
-        # stays till the group ends.
+        # detail sticker: the sentence's second content element. It drops
+        # in from above at the resolved trigger time with an accelerating
+        # fall, then ONE small upward bounce (8px, 0.35s) that never goes
+        # below the sand line and settles to still. No continuous bob.
         #   row: in the one-row line between the two mains
         #   otherwise: inner side of its main sticker (old v8 rule)
         # The airplane (beat 2) is special: after it appears it orbits the
@@ -476,26 +476,24 @@ for gi, group in enumerate(GROUPS):
         # the path, instead of sitting in the row.
         if bi in det_sizes:
             _dw, _dh = det_sizes[bi]
-            _drop = "pow(1-min((t-%s)/0.5,1),2)*400" % mid
-            _bounce = ("if(lt(t,%.2f),0,10*sin(2*PI*(t-%.2f)*2.5)*max(0,1-(t-%.2f)/0.8))"
-                       % (mid + 0.5, mid + 0.5, mid + 0.5))
-            _dbob = "3*sin(2*PI*t/3.7+%.1f)" % (bi * 1.7)
+            _drop = sticker_motion.ff_drop(trig)
+            _bounce = sticker_motion.ff_bounce(trig + sticker_motion.DROP_DUR)
             if bi == 2 and _mode == "row":
                 _ocx, _ocy = _row_cx[0], int(700 - sticker_hs[0] / 2)
                 _S = det_rot[bi]
-                _t1 = mid + 0.5
+                _t1 = trig + 0.5
                 _th = "1.5708+1.5708*(t-%.2f)" % _t1
                 _dx = ("if(lt(t,%.2f),%d-%d/2,%d+300*cos(%s)-%d/2)"
                        % (_t1, _ocx, _S, _ocx, _th, _S))
                 _dy = ("if(lt(t,%.2f),%d-(%s)-%d/2,%d-180*sin(%s)-%d/2)"
                        % (_t1, _ocy - 180, _drop, _S, _ocy, _th, _S))
                 nxt = "tmp%d" % tmp
-                filt_parts.append("[%s][d%d]overlay=x='%s':y='%s':enable='between(t,%s,%s)'[%s]" % (cur, k, _dx, _dy, mid, gdur, nxt))
+                filt_parts.append("[%s][d%d]overlay=x='%s':y='%s':enable='between(t,%s,%s)'[%s]" % (cur, k, _dx, _dy, trig, gdur, nxt))
                 cur, tmp = nxt, tmp + 1
                 continue
             elif _mode == "row":
                 _dx = "%d-%d/2" % (_row_cx[1 + k], _dw)
-                _dy = "%d-(%s)+(%s)+(%s)" % (700 - _dh, _drop, _bounce, _dbob)
+                _dy = "%d-(%s)+(%s)" % (700 - _dh, _drop, _bounce)
             else:
                 if len(group) == 2:
                     _side = 1 if k == 0 else -1
@@ -503,9 +501,9 @@ for gi, group in enumerate(GROUPS):
                 else:
                     _side, _vstag = 1, 0
                 _dx = "(%s)+%d-%d/2" % (cx_expr, _side * 400, _dw)
-                _dy = "%d-(%s)+(%s)+(%s)" % (int(ys[k] + Hk / 2 + _vstag - _dh / 2), _drop, _bounce, _dbob)
+                _dy = "%d-(%s)+(%s)" % (int(ys[k] + Hk / 2 + _vstag - _dh / 2), _drop, _bounce)
             nxt = "tmp%d" % tmp
-            filt_parts.append("[%s][d%d]overlay=x='%s':y='%s':enable='between(t,%s,%s)'[%s]" % (cur, k, _dx, _dy, mid, gdur, nxt))
+            filt_parts.append("[%s][d%d]overlay=x='%s':y='%s':enable='between(t,%s,%s)'[%s]" % (cur, k, _dx, _dy, trig, gdur, nxt))
             cur, tmp = nxt, tmp + 1
     for k, bi in enumerate(group):
         end = offsets[k + 1] if k + 1 < len(group) else gdur
